@@ -29,5 +29,7 @@ class Solution:
         return max(left_max, right_max, cross_max)
 
 
+
+## Kadane solution (linear time)
         
         
