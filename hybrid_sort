@@ -1,0 +1,61 @@
+import heapq
+import math
+
+// The algorithm works as follows:
+// • Start with a divide-and-conquer approach similar to Quicksort.
+// • Track the recursion depth during the sorting process.
+// • For small sub-arrays (typically less than 16 elements), use an insertion-based sorting method.
+// • If the recursion depth exceeds a certain threshold (typically 2log2(n), where n is the number of elements), switch to a heap-based sorting method.
+
+
+def insertion_sort(arr, low, high):
+	for i in range(low + 1, high + 1):
+		while arr[i] < arr[i - 1] and i > low:
+			arr[i], arr[i - 1] = arr[i - 1], arr[i]
+			i = i - 1
+			
+
+def quick_sort(arr, low, high, recursion_depth):
+
+	if low < high:
+		mid = partition(arr, low, high)
+		quick_sort(arr, low, mid - 1)
+		quick_sort(arr, mid + 1, high)
+	
+def partition(arr, low, high):
+    pivot = arr[high]
+    i = low - 1
+    for j in range(low, high):
+        if arr[j] <= pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
+	
+
+def hybrid_sort(arr):
+	max_depth = 2 * math.log2(len(arr)) if len(arr) > 1 else 0
+	sort(arr, 0, len(arr) - 1, 0, max_depth)
+
+def sort(arr, low, high, depth, max_depth):
+
+	# for small sub-arrays, use insertion sort
+	if high - low <= 16:
+		insertion_sort(arr, low, high)
+		return
+	# if recursion depth exceeds threashold, use heap sort
+	if depth > max_depth:
+		heapsort(arr, low, high)
+		return
+
+	# otherwise, partition like quicksort
+	pivot = partition(arr, low, high)
+	sort(arr, low, pivot - 1, depth + 1, max_depth)
+	sort(arr, pivot + 1, high, depth + 1, max_depth)
+
+		
+def heapsort(arr, low, high):
+	subarr = arr [low:high + 1]
+	heapq.heapify(subarr)
+	for i in range(low, high + 1):
+		arr[i] = heapq.heappop(subarr)
