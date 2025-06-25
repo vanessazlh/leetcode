@@ -36,10 +36,7 @@ class Solution:
                         queue.appendleft(node.left)
             
             output.append(level)
-            if order == True:
-                order = False
-            else:
-                order = True
+            order = not order
         
         return output
 
